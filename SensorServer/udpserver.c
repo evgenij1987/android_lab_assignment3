@@ -128,7 +128,7 @@ void sendToAllRegistered(int sock, struct sockaddr_storage * senderAddr, Event* 
 		//char * name =sender->name;
 		//size_t name_len=sender->name_len;
 		size_t shake_header_size = sizeof(Shake);
-		size_t buffer_size = shake_header_size + sender->name_len;
+		ssize_t buffer_size = shake_header_size + sender->name_len;
 		char * buffer = malloc(buffer_size);
 		shake = (Shake*) buffer;
 		shake->type = TYPE_SHAKE;

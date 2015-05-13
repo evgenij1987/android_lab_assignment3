@@ -9,6 +9,13 @@
 #include <netdb.h>
 #include <sys/types.h>
 #include <ifaddrs.h>
+void dieGracefully(const char *format, ...) {
+	va_list arg;
+	va_start(arg, format);
+	vfprintf(stderr, format, arg);
+	va_end(arg);
+	exit(1);
+}
 
 void printSocketAdress(const struct sockaddr *address, FILE *stream) {
 	// Test for address and stream
@@ -111,10 +118,4 @@ void printServeringRunningOn(char * port) {
 	freeifaddrs(ifap);
 }
 
-void dieGracefully(const char *format, ...) {
-	va_list arg;
-	va_start(arg, format);
-	vfprintf(stderr, format, arg);
-	va_end(arg);
-	exit(1);
-}
+
