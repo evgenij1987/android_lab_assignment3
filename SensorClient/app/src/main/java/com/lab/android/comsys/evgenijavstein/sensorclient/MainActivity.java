@@ -38,8 +38,8 @@ public class MainActivity extends ActionBarActivity {
         nameEditText = (EditText) findViewById(R.id.nameField);
         registerButton = (Button) findViewById(R.id.registerButton);
         unregisterButtton = (Button) findViewById(R.id.unregisterButton);
-        ipAdressField.setText("192.168.2.104");
-        portEditText.setText("3000");
+        //ipAdressField.setText("192.168.2.104");
+        //portEditText.setText("3000");
 
 
         sendButton = (Button) findViewById(R.id.sendEventButton);
@@ -71,8 +71,7 @@ public class MainActivity extends ActionBarActivity {
         };
         shakeEventListView.setAdapter(adapter);
         sensorClient = SensorClient.newInstance();
-        sensorClient.setSensorServerIp(ipAdressField.getText().toString());
-        sensorClient.setSensorServerPort(Integer.parseInt(portEditText.getText().toString()));
+
 
         sensorClient.setOnShakeListener(new SensorClient.OnShakeListener() {
             @Override
@@ -89,6 +88,8 @@ public class MainActivity extends ActionBarActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sensorClient.setSensorServerIp(ipAdressField.getText().toString());
+                sensorClient.setSensorServerPort(Integer.parseInt(portEditText.getText().toString()));
                 sensorClient.register(nameEditText.getText().toString());
                 registerButton.setEnabled(false);
             }

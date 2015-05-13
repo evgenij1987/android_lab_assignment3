@@ -17,14 +17,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/ipAdressField"
         android:layout_below="@+id/displayEventView"
-        android:hint="192.168.2.146"
+        android:hint="IP xxx.xxx.xxx.xxx"
         />
 
     <EditText
         android:id="@+id/portField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="3000"
+        android:hint="Port xxxx"
         android:layout_toRightOf="@id/ipAdressField"
         android:layout_alignBottom="@+id/ipAdressField"
         />
