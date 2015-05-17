@@ -12,5 +12,5 @@ void printSocketAdress(const struct sockaddr *address, FILE *stream);
 bool sockAddressEquals(const struct sockaddr *addr1, const struct sockaddr *addr2);
 bool sockAddressEquals(const struct sockaddr *addr1, const struct sockaddr *addr2);
 int createDatagramSocket(char* port);
-void printServeringRunningOn();
+
 #endif /* ADRESSHELPER_H_ */

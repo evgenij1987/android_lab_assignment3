@@ -17,7 +17,6 @@
 #include "udpserver.h"
 #include "helper.h"
 
-
 //we store all registered clients here
 //all unregistered are kicked out as soon as one new client is registering
 Client * clients[MAX_CLIENTS];
@@ -31,9 +30,9 @@ int main(int argc, char *argv[]) {
 
 	//create udp socket on specified port
 	int datagramSocket = createDatagramSocket(port);
-	printServeringRunningOn(port);
+	printf("Sensor server running on port: %s \n",  port);
 
-	for (;;) {
+	while (true) {
 
 		// Client address AF-independent, can hold both AF_INET & AF_INET6 adresses
 		struct sockaddr_storage clntAddr;
@@ -72,8 +71,12 @@ int main(int argc, char *argv[]) {
 			Event * event = (Event*) buffer;
 			sendToAllRegistered(datagramSocket, &clntAddr, event);
 		} else if (buffer[0] == TYPE_UNREGISTER) {
+
 			Client * unregisteringClient = findClientBySocktAddr(&clntAddr);
 			free(unregisteringClient);
+			findClientMarkRemoved(&clntAddr);//now the pointer inside array shows to NULL-> no double corruption on multiple unregister calls
+
+
 		}
 
 	}
@@ -99,7 +102,7 @@ void addClient(Client * clnt) {
 }
 
 bool isRegistered(Client * client) {
-	return ((time(0) - client->last_keep_alive_request) <= 20);
+	return ((time(0) - client->last_keep_alive_request) <= KEEP_ALIVE_TIME);
 }
 bool isSameClient(Client * new, Client*in_list) {
 
@@ -117,6 +120,17 @@ Client *findClientBySocktAddr(struct sockaddr_storage * sock_adrr) {
 	return NULL;
 }
 
+
+void  findClientMarkRemoved(struct sockaddr_storage * sock_adrr) {
+	int i;
+
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (clients[i] != NULL)
+			if (sockAddressEquals((struct sockaddr *) &(clients[i]->clnt_addr), (struct sockaddr *) sock_adrr))
+				 clients[i]=NULL;
+	}
+
+}
 /**
  * Sends Shake packet created from <code>event</code> to all registered, except the sender itself.
  */
