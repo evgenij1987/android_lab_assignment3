@@ -1,0 +1,1 @@
+helper.d: ../helper.c
